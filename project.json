@@ -1,0 +1,8 @@
+{
+  "engine": "cocos2d-html5",
+  "packages": "packages",
+  "version": "2.4.1",
+  "name": "Checkers",
+  "id": "4ec7ff48-a082-45b2-a90b-005487f4c8f2",
+  "isNew": false
+}
