@@ -1,8 +1,8 @@
 {
-  "engine": "cocos2d-html5",
+  "engine": "cocos-creator-js",
   "packages": "packages",
+  "name": "FlyingChess",
+  "id": "a75382c0-d598-4558-a696-d6c798d03e21",
   "version": "2.4.1",
-  "name": "Checkers",
-  "id": "4ec7ff48-a082-45b2-a90b-005487f4c8f2",
   "isNew": false
 }
