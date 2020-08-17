@@ -34,7 +34,7 @@ export default class DiceUICtr extends UIBase {
     onStopAnim() {
         ResMgr.inst.loadRes("_DynamicAssets","Sprite/Dice/"+this.diceNum.toString(), cc.SpriteFrame).then((spriteFrame: cc.SpriteFrame) => {
             this.diceSprite.spriteFrame = spriteFrame
-            EventCenter.emit(EventType.GamePlayPlaneAnim)
+            EventCenter.emit(EventType.GameDiceAnimFinish,this.diceNum)
         })
     }
     // update (dt) {}

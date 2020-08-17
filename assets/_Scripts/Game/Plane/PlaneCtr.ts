@@ -1,17 +1,33 @@
-import BasePlane from "./BasePlane";
+import BasePlane, { PlaneState } from "./BasePlane";
 
-const {ccclass, property} = cc._decorator;
+const { ccclass, property } = cc._decorator;
 
 @ccclass
 export default class PlaneCtr extends BasePlane {
     // onLoad () {}
 
-    start () {
-        this.getComponent(cc.Button).node.on("click",this.onClickPlane,this)
+    btnPlane: cc.Button = null
+    planeAnim: cc.Animation = null
+    a:number = 1
+    start() {
+        this.btnPlane = this.getComponent(cc.Button)
+        this.planeAnim = this.getComponent(cc.Animation)
+        this.btnPlane.node.on('click', this.onClickPlane, this)
     }
 
-    onClickPlane(){
-        
+    onClickPlane() {
+
+    }
+
+    playPlaneAnim() {
+        if (this.state == PlaneState.ready || this.state == PlaneState.flying) {
+            this.planeAnim.play()
+            this.planeAnim.defaultClip.wrapMode = cc.WrapMode.Loop
+        }
+    }
+
+    stopPlaneAnim() {
+        this.planeAnim.stop()
     }
     // update (dt) {}
 }

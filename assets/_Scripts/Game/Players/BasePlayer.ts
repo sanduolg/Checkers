@@ -1,19 +1,21 @@
 import PlaneCtr from "../Plane/PlaneCtr";
 
-const {ccclass, property} = cc._decorator;
-export enum PlayerState{
-    wait,
+const { ccclass, property } = cc._decorator;
+export enum PlayerState {
+    join,
     start,
     gaming,
+    readyFlying,
+    noFlying,
     flying,
     end,
 }
 
 @ccclass
 export default class BasePlayer extends cc.Component {
-    name:string
-    userId:number
+    name: string
+    userId: number
     // planes:PlaneCtr[]
-    chairID:number
-    state:PlayerState
+    chairID: number
+    state: PlayerState
 }

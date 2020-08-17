@@ -6,5 +6,7 @@ export enum EventType {
     GameClickDice = "GameClickDice",
     GamePlayPlaneAnim = 'GamePlayPlaneAnim',
 
+    GameDiceAnimFinish = 'GameDiceAnimFinish',
+
 
 }
