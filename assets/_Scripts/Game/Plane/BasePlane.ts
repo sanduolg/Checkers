@@ -8,11 +8,11 @@ export enum PlaneColor {
     green
 }
 export enum PlaneState {
-    origin,
-    wait,
-    ready,
-    flying,
-    finish,
+    origin,              //在原点
+    ready,               //准备起飞
+    flied,               //已经起飞
+    flying,              //正在起飞
+    finish,              //到达终点
 }
 export default class BasePlane extends cc.Component {
     position: cc.Vec2

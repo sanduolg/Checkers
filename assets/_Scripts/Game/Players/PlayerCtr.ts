@@ -11,42 +11,53 @@ export default class PlayerCtr extends BasePlayer {
     @property([cc.Component])
     planes: cc.Component[] = []
     planesAnim: cc.Animation[] = []
-    planesCtr:PlaneCtr[] = []
-   
+    planesCtr: PlaneCtr[] = []
+
 
     onLoad() {
-        EventCenter.on(EventType.GamePlayPlaneAnim, this.palyPlanesAnim,this)
+        EventCenter.on(EventType.GamePlayPlaneAnim, this.playPlanesAnim, this)
     }
     start() {
         this.planes.forEach(plane => {
             this.planesAnim.push(plane.getComponent(cc.Animation))
         });
-        this.planesCtr.forEach(plane =>{
+        this.planes.forEach(plane => {
             this.planesCtr.push(plane.getComponent(PlaneCtr))
         })
+
     }
-    onDestroy(){
-        EventCenter.off(EventType.GamePlayPlaneAnim, this.palyPlanesAnim,this)
+    onDestroy() {
+        EventCenter.off(EventType.GamePlayPlaneAnim, this.playPlanesAnim, this)
     }
 
-    setPlaneState(planeId:number,state:PlaneState){
-        if(planeId>0&&planeId<4){
+
+    checkPlayPlaneAnim(diceNum: number) {
+        if (diceNum % 2 == 0) {
+            this.planesCtr.forEach(plane => {
+                if (plane.state == PlaneState.origin || plane.state == PlaneState.ready ) {
+
+                }
+            })
+        }
+    }
+    setPlaneState(planeId: number, state: PlaneState) {
+        if (planeId >= 0 && planeId < 4) {
             this.planesCtr[planeId].state = state
         }
-        this.palyPlanesAnim()
+        this.playPlanesAnim()
     }
-  
 
-    palyPlanesAnim() {
-       this.planesCtr.forEach(plane=>{
-        plane.playPlaneAnim()
-       })
+
+    playPlanesAnim() {
+        this.planesCtr.forEach(plane => {
+            plane.playPlaneAnim()
+        })
     }
 
     stopPlanesAnim() {
-        this.planesCtr.forEach(plane=>{
+        this.planesCtr.forEach(plane => {
             plane.stopPlaneAnim()
-           })
+        })
     }
 
 

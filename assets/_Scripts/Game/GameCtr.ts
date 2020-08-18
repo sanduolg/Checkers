@@ -26,6 +26,7 @@ export default class GameCtr {
     isCanFlying(diceNum: number) {
         if (diceNum % 2 == 0) {
             this.players[0].setPlaneState(0,PlaneState.flying)
+            this.players[0].setPlaneState(3,PlaneState.flying)
         } else {
             TipsForm.popUp("Prefab/Common/TipsFrom", "点数是2，4，6才能起飞")
         }

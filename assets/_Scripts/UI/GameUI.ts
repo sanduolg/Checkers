@@ -1,3 +1,4 @@
+import CocosHelper from "../Common/CocosHelper";
 import { EventCenter } from "../Common/EventCenter";
 import { EventType } from "../Common/EventType";
 import { FormType } from "../Common/SysDefine";
@@ -16,7 +17,7 @@ export default class GameUI extends UIBase {
     static prefabPath = "GameUI";
     gameCtr: GameCtr = null
     btnDice: cc.Button = null
-    players: PlayerCtr[] = null
+    players: PlayerCtr[] = []
     onLoad() {
         this.gameCtr = new GameCtr()
         this.gameCtr.onLoad()
@@ -25,9 +26,8 @@ export default class GameUI extends UIBase {
         this.gameCtr.start()
         this.btnDice = this.node.getChildByName('btnDice').getComponent(cc.Button)
         this.onClickAdd(this.btnDice, this.onClickDice, this)
-       console.log(cc.find('Canvas/GameUI/Players/player0'))
-        this.players[0] = cc.find('Canvas/GameUI/Players/player0').getComponent(PlayerCtr)
-       
+        console.log(CocosHelper.findChildInNode("player0", this.node))
+        this.players[0] = CocosHelper.findChildInNode("player0", this.node).getComponent(PlayerCtr)
         this.gameCtr.setPlayerInfo(this.players)
     }
     onDestroy() {
@@ -37,7 +37,7 @@ export default class GameUI extends UIBase {
 
     onClickDice() {
         let num = CommonUtils.randomRange(1, 6)
-        console.log(num)
+        console.log("骰子数：" + num)
         EventCenter.emit(EventType.GameClickDice, num)
     }
 
