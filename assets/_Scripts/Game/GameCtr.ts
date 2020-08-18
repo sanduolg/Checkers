@@ -9,28 +9,28 @@ const { ccclass, property } = cc._decorator;
 export default class GameCtr {
     players: PlayerCtr[] = null
     onLoad() {
-        EventCenter.on(EventType.GameDiceAnimFinish, this.isCanFlying, this)
+        EventCenter.on(EventType.GameDiceAnimFinish, this.setCurrentPlayerAnim, this)
     }
 
     start() {
-        
+
     }
-    setPlayerInfo(players:PlayerCtr[]){
+    setPlayerInfo(players: PlayerCtr[]) {
         this.players = players
     }
 
     onDestroy() {
-        EventCenter.off(EventType.GameDiceAnimFinish, this.isCanFlying, this)
+        EventCenter.off(EventType.GameDiceAnimFinish, this.setCurrentPlayerAnim, this)
     }
 
-    isCanFlying(diceNum: number) {
-        if (diceNum % 2 == 0) {
-            this.players[0].setPlaneState(0,PlaneState.flying)
-            this.players[0].setPlaneState(3,PlaneState.flying)
-        } else {
+    setCurrentPlayerAnim(diceNum: number) {
+        if (diceNum % 2 != 0) {
+            if (this.players[0].isPlaneStateOrigin)
             TipsForm.popUp("Prefab/Common/TipsFrom", "点数是2，4，6才能起飞")
         }
+        this.players[0].checkPlayPlaneAnim(diceNum)
     }
+
 
 
     // update (dt) {}

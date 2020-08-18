@@ -34,11 +34,23 @@ export default class PlayerCtr extends BasePlayer {
     checkPlayPlaneAnim(diceNum: number) {
         if (diceNum % 2 == 0) {
             this.planesCtr.forEach(plane => {
-                if (plane.state == PlaneState.origin || plane.state == PlaneState.ready ) {
-
-                }
+                if (plane.state == PlaneState.origin || plane.state == PlaneState.ready || plane.state == PlaneState.flown)
+                    plane.playPlaneAnim()
+            })
+        } else {
+            this.planesCtr.forEach(plane => {
+                if (plane.state == PlaneState.ready || plane.state == PlaneState.flown)
+                    plane.playPlaneAnim()
             })
         }
+    }
+    //检测飞机的状态是不是在origin
+    isPlaneStateOrigin():boolean{
+        this.planesCtr.forEach(plane=>{
+            if(plane.state!=PlaneState.origin)
+            return false;
+        })
+        return true;
     }
     setPlaneState(planeId: number, state: PlaneState) {
         if (planeId >= 0 && planeId < 4) {

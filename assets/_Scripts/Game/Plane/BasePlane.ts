@@ -10,7 +10,7 @@ export enum PlaneColor {
 export enum PlaneState {
     origin,              //在原点
     ready,               //准备起飞
-    flied,               //已经起飞
+    flown,               //已经起飞
     flying,              //正在起飞
     finish,              //到达终点
 }
