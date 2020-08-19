@@ -2,6 +2,7 @@ import { EventCenter } from "../../Common/EventCenter";
 import { EventType } from "../../Common/EventType";
 import UIBase from "../../Common/UIBase";
 import ResMgr from "../../Manager/ResMgr";
+import GameData from "../GameData";
 
 const { ccclass, property } = cc._decorator;
 
@@ -28,6 +29,7 @@ export default class DiceUICtr extends UIBase {
    
     showDice(num: number) {
         this.diceNum = num;
+        GameData.diceNum = num
         this.diceAinm.play()
     }
 

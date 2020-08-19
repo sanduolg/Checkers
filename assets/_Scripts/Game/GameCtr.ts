@@ -1,6 +1,7 @@
 import { EventCenter } from "../Common/EventCenter";
 import { EventType } from "../Common/EventType";
 import TipsForm from "../Common/TipsForm";
+import GameData from "./GameData";
 import { PlaneState } from "./Plane/BasePlane";
 import PlayerCtr from "./Players/PlayerCtr";
 const { ccclass, property } = cc._decorator;
@@ -27,6 +28,7 @@ export default class GameCtr {
         if (diceNum % 2 != 0) {
             if (this.players[0].isPlaneStateOrigin)
             TipsForm.popUp("Prefab/Common/TipsFrom", "点数是2，4，6才能起飞")
+            return
         }
         this.players[0].checkPlayPlaneAnim(diceNum)
     }
