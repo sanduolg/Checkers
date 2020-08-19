@@ -1,10 +1,16 @@
-const {ccclass, property} = cc._decorator;
+const { ccclass, property } = cc._decorator;
 
 @ccclass
-export default class PlanePosConfig  {
-    red =[[100,100],[100,200],[100,300],[100,400],[100,500],[100,600],,[100,700]]
-    yellow = [[200,100],[200,200],[200,300],[200,400],[200,500],[200,600],,[200,700]]
-    blue =[[300,100],[300,200],[300,300],[300,400],[300,500],[300,600],,[300,700]]
-    green = [[400,100],[400,200],[400,300],[400,400],[400,500],[400,600],,[400,700]]
-    planesPos= [this.red,this.yellow,this.blue,this.green]
+export default class PlanePosConfig {
+    public static planesPos = [
+        [new cc.Vec2(100,100),new cc.Vec2(100,200),new cc.Vec2(100,300),new cc.Vec2(100,400),new cc.Vec2(100,500),new cc.Vec2(100,600)] ,
+        [new cc.Vec2(100,100),new cc.Vec2(100,200),new cc.Vec2(100,300),new cc.Vec2(100,400),new cc.Vec2(100,500),new cc.Vec2(100,600)] ,
+        [new cc.Vec2(100,100),new cc.Vec2(100,200),new cc.Vec2(100,300),new cc.Vec2(100,400),new cc.Vec2(100,500),new cc.Vec2(100,600)] ,
+        [new cc.Vec2(100,100),new cc.Vec2(100,200),new cc.Vec2(100,300),new cc.Vec2(100,400),new cc.Vec2(100,500),new cc.Vec2(100,600)] 
+    ]
+
+    
+    public static getPlanesConfigPos(playerIndex:number,posIndex:number){
+
+    }
 }

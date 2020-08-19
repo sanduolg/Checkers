@@ -36,9 +36,7 @@ export default class TipsForm extends UIBase {
     }
 
     async exitAnim() {
-        console.log(this.node)
         await CocosHelper.runSyncAction(this.node, cc.moveBy(1.5, 0, 150));
-        console.log(this.node)
         this.node.removeFromParent();
         this.node.destroy();
     }

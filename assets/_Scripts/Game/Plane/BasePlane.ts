@@ -19,6 +19,6 @@ export default class BasePlane extends cc.Component {
     color: PlaneColor
     num: number              //飞机编号
     id: number               //飞机ID
-    state: PlaneState
+    state: PlaneState = PlaneState.origin
 
 }

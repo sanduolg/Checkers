@@ -1,4 +1,6 @@
 import BasePlane, { PlaneState } from "./BasePlane";
+import CocosHelper from "../../Common/CocosHelper";
+import PlanePosConfig from "./PlanePosConfig";
 
 const { ccclass, property } = cc._decorator;
 
@@ -22,6 +24,7 @@ export default class PlaneCtr extends BasePlane {
             this.state = PlaneState.flying
             this.btnPlane.interactable = false
         }
+        this.planeMoveAnim(1)
     }
 
     playPlaneAnim() {
@@ -35,9 +38,14 @@ export default class PlaneCtr extends BasePlane {
         this.planeAnim.stop()
     }
 
-    planeMoveAnim(jumpStep:number){
+     public async planeMoveAnim(jumpStep:number){
         if(jumpStep<=0) return
-        
+        if(this.state == PlaneState.ready){
+            await CocosHelper.runSyncAction(this.node, cc.moveTo(.5, PlanePosConfig.planesPos[0][0]),cc.moveTo(.5, PlanePosConfig.planesPos[0][1]));
+        }else{
+            
+        }
+        this.stopPlaneAnim()
     }
 
     // update (dt) {}
