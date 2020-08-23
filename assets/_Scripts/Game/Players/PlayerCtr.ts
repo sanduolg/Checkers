@@ -16,6 +16,7 @@ export default class PlayerCtr extends BasePlayer {
 
     onLoad() {
         EventCenter.on(EventType.GamePlayPlaneAnim, this.playPlanesAnim, this)
+        EventCenter.on(EventType.GameStopAllPlaneAnim, this.stopPlanesAnim, this)
     }
     start() {
         this.planes.forEach(plane => {
@@ -28,6 +29,7 @@ export default class PlayerCtr extends BasePlayer {
     }
     onDestroy() {
         EventCenter.off(EventType.GamePlayPlaneAnim, this.playPlanesAnim, this)
+        EventCenter.off(EventType.GameStopAllPlaneAnim, this.stopPlanesAnim, this)
     }
 
 
@@ -45,12 +47,13 @@ export default class PlayerCtr extends BasePlayer {
         }
     }
     //检测飞机的状态是不是在origin
-    isPlaneStateOrigin():boolean{
-        this.planesCtr.forEach(plane=>{
-            if(plane.state!=PlaneState.origin)
-            return false;
+    isPlaneStateOrigin(): boolean {
+        let isOrigin = true
+        this.planesCtr.forEach(plane => {
+            if (plane.state != PlaneState.origin)
+                isOrigin = false
         })
-        return true;
+        return isOrigin;
     }
     setPlaneState(planeId: number, state: PlaneState) {
         if (planeId >= 0 && planeId < 4) {
@@ -67,6 +70,7 @@ export default class PlayerCtr extends BasePlayer {
     }
 
     stopPlanesAnim() {
+        console.log( this.planesCtr.length)
         this.planesCtr.forEach(plane => {
             plane.stopPlaneAnim()
         })

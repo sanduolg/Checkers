@@ -46,6 +46,17 @@ export default class CocosHelper {
         });
     }
 
+    public static async runSyncActions(node: cc.Node, actions: cc.FiniteTimeAction[]) {
+        if(!actions || actions.length <= 0) return ;
+        return new Promise((resolve, reject) => {
+            actions.push(cc.callFunc(() => {
+                resolve(true);
+            }));
+            node.runAction(cc.sequence(actions));
+        });
+    }
+
+
     /** 同步的动画 */
     public static async runSyncAnim(node: cc.Node, animName?: string | number) {
         let anim = node.getComponent(cc.Animation);

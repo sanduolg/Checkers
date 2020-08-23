@@ -26,7 +26,6 @@ export default class GameUI extends UIBase {
         this.gameCtr.start()
         this.btnDice = this.node.getChildByName('btnDice').getComponent(cc.Button)
         this.onClickAdd(this.btnDice, this.onClickDice, this)
-        console.log(CocosHelper.findChildInNode("player0", this.node))
         this.players[0] = CocosHelper.findChildInNode("player0", this.node).getComponent(PlayerCtr)
         this.gameCtr.setPlayerInfo(this.players)
     }

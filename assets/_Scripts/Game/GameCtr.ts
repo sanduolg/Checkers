@@ -26,12 +26,14 @@ export default class GameCtr {
 
     setCurrentPlayerAnim(diceNum: number) {
         if (diceNum % 2 != 0) {
-            if (this.players[0].isPlaneStateOrigin)
-            TipsForm.popUp("Prefab/Common/TipsFrom", "点数是2，4，6才能起飞")
-            return
+            if (this.players[0].isPlaneStateOrigin()) {
+                TipsForm.popUp("Prefab/Common/TipsFrom", "点数是2，4，6才能起飞")
+                return
+            }
         }
         this.players[0].checkPlayPlaneAnim(diceNum)
     }
+
 
 
 

@@ -1,6 +1,9 @@
 import BasePlane, { PlaneState } from "./BasePlane";
 import CocosHelper from "../../Common/CocosHelper";
 import PlanePosConfig from "./PlanePosConfig";
+import { EventCenter } from "../../Common/EventCenter";
+import { EventType } from "../../Common/EventType";
+import GameData from "../GameData";
 
 const { ccclass, property } = cc._decorator;
 
@@ -10,6 +13,7 @@ export default class PlaneCtr extends BasePlane {
 
     btnPlane: cc.Button = null
     planeAnim: cc.Animation = null
+    jumpStep: number = -1
     start() {
         this.btnPlane = this.getComponent(cc.Button)
         this.planeAnim = this.getComponent(cc.Animation)
@@ -18,13 +22,14 @@ export default class PlaneCtr extends BasePlane {
     }
 
     onClickPlane() {
-        if(this.state == PlaneState.origin){
+        if (this.state == PlaneState.origin) {
             this.state = PlaneState.ready
-        }else if(this.state == PlaneState.ready){
+        } else if (this.state == PlaneState.ready || this.state == PlaneState.flown) {
             this.state = PlaneState.flying
             this.btnPlane.interactable = false
         }
-        this.planeMoveAnim(1)
+        EventCenter.emit(EventType.GameStopAllPlaneAnim)
+        this.planeMoveAnim(GameData.diceNum)
     }
 
     playPlaneAnim() {
@@ -38,14 +43,23 @@ export default class PlaneCtr extends BasePlane {
         this.planeAnim.stop()
     }
 
-     public async planeMoveAnim(jumpStep:number){
-        if(jumpStep<=0) return
-        if(this.state == PlaneState.ready){
-            await CocosHelper.runSyncAction(this.node, cc.moveTo(.5, PlanePosConfig.planesPos[0][0]),cc.moveTo(.5, PlanePosConfig.planesPos[0][1]));
-        }else{
-            
+    public async planeMoveAnim(diceNum: number) {
+        if (diceNum <= 0) return
+        if (this.state == PlaneState.ready) {
+            this.jumpStep = 0
+            let action = [cc.moveTo(.5, PlanePosConfig.planesPos[0][0])]
+            await CocosHelper.runSyncActions(this.node, action);
+        } else {
+            let action = []
+            for (var i = this.jumpStep; i <= diceNum + this.jumpStep; i++) {
+                action.push(cc.moveTo(.5, PlanePosConfig.planesPos[0][i]))
+            }
+            this.jumpStep = this.jumpStep + diceNum;
+            // if()
+            await CocosHelper.runSyncActions(this.node, action);
+            this.state = PlaneState.flown
+           
         }
-        this.stopPlaneAnim()
     }
 
     // update (dt) {}
