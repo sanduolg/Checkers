@@ -1,5 +1,4 @@
 import LoginUI from "./UI/LoginUI";
-import UIBase from "./Common/UIBase";
 
 const {ccclass, property} = cc._decorator;
 

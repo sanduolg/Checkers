@@ -51,14 +51,30 @@ export default class PlaneCtr extends BasePlane {
             await CocosHelper.runSyncActions(this.node, action);
         } else {
             let action = []
-            for (var i = this.jumpStep; i <= diceNum + this.jumpStep; i++) {
-                action.push(cc.moveTo(.5, PlanePosConfig.planesPos[0][i]))
-            }
+            let oldStep = this.jumpStep;
             this.jumpStep = this.jumpStep + diceNum;
-            // if()
+            if (this.jumpStep == GameData.mapStep) {
+                this.state = PlaneState.finish
+                for (var i = oldStep; i <= this.jumpStep; i++) {
+                    action.push(cc.moveTo(.5, PlanePosConfig.planesPos[0][i]))
+                }
+            } else if (this.jumpStep > GameData.mapStep) {
+                this.state = PlaneState.flown
+                for (var i = oldStep; i <= GameData.mapStep; i++) {
+                    action.push(cc.moveTo(.5, PlanePosConfig.planesPos[0][i]))
+                }
+                for (var i = GameData.mapStep - 1; i >= 2 * GameData.mapStep - this.jumpStep; i--) {
+                    action.push(cc.moveTo(.5, PlanePosConfig.planesPos[0][i]))
+                }
+                this.jumpStep = 2 * GameData.mapStep - this.jumpStep
+            } else {
+                this.state = PlaneState.flown
+                for (var i = oldStep; i <= this.jumpStep; i++) {
+                    action.push(cc.moveTo(.5, PlanePosConfig.planesPos[0][i]))
+                }
+            }
+
             await CocosHelper.runSyncActions(this.node, action);
-            this.state = PlaneState.flown
-           
         }
     }
 

@@ -7,7 +7,8 @@ export default class GetPosTool extends cc.Component {
         this.node.children.forEach(child=>{
             this.path = this.path+"new cc.Vec2("+child.position.x+","+child.position.y+"),"
         })
-        console.log(this.path)
+        console.log(this.node.getParent.name)
+        console.log ( this.path)
     }
 
     // update (dt) {}
