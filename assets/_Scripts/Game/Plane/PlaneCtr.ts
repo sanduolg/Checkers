@@ -1,4 +1,4 @@
-import BasePlane, { PlaneState } from "./BasePlane";
+import BasePlane, { PlaneState, PlaneColor } from "./BasePlane";
 import CocosHelper from "../../Common/CocosHelper";
 import PlanePosConfig from "./PlanePosConfig";
 import { EventCenter } from "../../Common/EventCenter";
@@ -80,6 +80,7 @@ export default class PlaneCtr extends BasePlane {
         }
     }
 
+
     async planeArriveEnd(){
         if(this.state == PlaneState.finish){
             cc.moveTo(.5, PlanePosConfig.planesOriginPos[0][i])
@@ -87,7 +88,7 @@ export default class PlaneCtr extends BasePlane {
         }
        
         this.node.color = cc.color(255,255,0,255);
-    }
+
 
     // update (dt) {}
 }
