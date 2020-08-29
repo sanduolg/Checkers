@@ -19,6 +19,7 @@ export default class PlaneCtr extends BasePlane {
         this.planeAnim = this.getComponent(cc.Animation)
         this.btnPlane.node.on('click', this.onClickPlane, this)
         this.btnPlane.interactable = false
+        this.node.color = cc.color(255,255,255,255);
     }
 
     onClickPlane() {
@@ -55,6 +56,7 @@ export default class PlaneCtr extends BasePlane {
             this.jumpStep = this.jumpStep + diceNum;
             if (this.jumpStep == GameData.mapStep) {
                 this.state = PlaneState.finish
+                this.planeArriveEnd()
                 for (var i = oldStep; i <= this.jumpStep; i++) {
                     action.push(cc.moveTo(.5, PlanePosConfig.planesPos[0][i]))
                 }
@@ -76,6 +78,15 @@ export default class PlaneCtr extends BasePlane {
 
             await CocosHelper.runSyncActions(this.node, action);
         }
+    }
+
+    async planeArriveEnd(){
+        if(this.state == PlaneState.finish){
+            cc.moveTo(.5, PlanePosConfig.planesOriginPos[0][i])
+            await CocosHelper.runSyncActions(this.node, action);
+        }
+       
+        this.node.color = cc.color(255,255,0,255);
     }
 
     // update (dt) {}

@@ -19,13 +19,11 @@ export default class PlayerCtr extends BasePlayer {
         EventCenter.on(EventType.GameStopAllPlaneAnim, this.stopPlanesAnim, this)
     }
     start() {
-        this.planes.forEach(plane => {
-            this.planesAnim.push(plane.getComponent(cc.Animation))
-        });
-        this.planes.forEach(plane => {
-            this.planesCtr.push(plane.getComponent(PlaneCtr))
-        })
-
+        for(var i =0;i<4;i++){
+            this.planesAnim.push(this.planes[i].getComponent(cc.Animation))
+            this.planesCtr.push(this.planes[i].getComponent(PlaneCtr))
+            this.planesCtr[i].chairId = i
+        }
     }
     onDestroy() {
         EventCenter.off(EventType.GamePlayPlaneAnim, this.playPlanesAnim, this)
