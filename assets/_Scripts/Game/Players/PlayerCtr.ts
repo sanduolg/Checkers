@@ -1,6 +1,6 @@
 import { EventCenter } from "../../Common/EventCenter";
 import { EventType } from "../../Common/EventType";
-import { PlaneState } from "../Plane/BasePlane";
+import { PlaneState, PlaneColor } from "../Plane/BasePlane";
 import PlaneCtr from "../Plane/PlaneCtr";
 import BasePlayer from "./BasePlayer";
 
@@ -22,7 +22,9 @@ export default class PlayerCtr extends BasePlayer {
         for(var i =0;i<4;i++){
             this.planesAnim.push(this.planes[i].getComponent(cc.Animation))
             this.planesCtr.push(this.planes[i].getComponent(PlaneCtr))
-            this.planesCtr[i].chairId = i
+            this.planesCtr[i].num = i
+            this.planesCtr[i].playerChairId = this.chairId
+            this.planesCtr[i].color = i+1
         }
     }
     onDestroy() {

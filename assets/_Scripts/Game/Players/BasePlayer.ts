@@ -16,6 +16,6 @@ export default class BasePlayer extends cc.Component {
     name: string
     userId: number
     // planes:PlaneCtr[]
-    chairID: number
+    chairId: number
     state: PlayerState
 }

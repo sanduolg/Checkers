@@ -9,6 +9,7 @@ const { ccclass, property } = cc._decorator;
 @ccclass
 export default class GameCtr {
     players: PlayerCtr[] = null
+    nowActionPlayer:number = 0               //当前可操作玩家
     onLoad() {
         EventCenter.on(EventType.GameDiceAnimFinish, this.setCurrentPlayerAnim, this)
     }

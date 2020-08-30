@@ -28,7 +28,7 @@ export default class GameUI extends UIBase {
         this.onClickAdd(this.btnDice, this.onClickDice, this)
         for(var i =0;i<4;i++){
             this.players[i] = CocosHelper.findChildInNode("player"+i, this.node).getComponent(PlayerCtr)
-            this.players[i].chairID = i
+            this.players[i].chairId = i
         }
         
         this.gameCtr.setPlayerInfo(this.players)

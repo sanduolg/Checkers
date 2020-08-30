@@ -48,7 +48,7 @@ export default class PlaneCtr extends BasePlane {
         if (diceNum <= 0) return
         if (this.state == PlaneState.ready) {
             this.jumpStep = 0
-            let action = [cc.moveTo(.5, PlanePosConfig.planesPos[0][0])]
+            let action = [cc.moveTo(.5, PlanePosConfig.planesPos[this.playerChairId][0])]
             await CocosHelper.runSyncActions(this.node, action);
         } else {
             let action = []
@@ -56,39 +56,38 @@ export default class PlaneCtr extends BasePlane {
             this.jumpStep = this.jumpStep + diceNum;
             if (this.jumpStep == GameData.mapStep) {
                 this.state = PlaneState.finish
-                this.planeArriveEnd()
                 for (var i = oldStep; i <= this.jumpStep; i++) {
-                    action.push(cc.moveTo(.5, PlanePosConfig.planesPos[0][i]))
+                    action.push(cc.moveTo(.5, PlanePosConfig.planesPos[this.playerChairId][i]))
                 }
             } else if (this.jumpStep > GameData.mapStep) {
                 this.state = PlaneState.flown
                 for (var i = oldStep; i <= GameData.mapStep; i++) {
-                    action.push(cc.moveTo(.5, PlanePosConfig.planesPos[0][i]))
+                    action.push(cc.moveTo(.5, PlanePosConfig.planesPos[this.playerChairId][i]))
                 }
                 for (var i = GameData.mapStep - 1; i >= 2 * GameData.mapStep - this.jumpStep; i--) {
-                    action.push(cc.moveTo(.5, PlanePosConfig.planesPos[0][i]))
+                    action.push(cc.moveTo(.5, PlanePosConfig.planesPos[this.playerChairId][i]))
                 }
                 this.jumpStep = 2 * GameData.mapStep - this.jumpStep
             } else {
                 this.state = PlaneState.flown
                 for (var i = oldStep; i <= this.jumpStep; i++) {
-                    action.push(cc.moveTo(.5, PlanePosConfig.planesPos[0][i]))
+                    action.push(cc.moveTo(.5, PlanePosConfig.planesPos[this.playerChairId][i]))
                 }
             }
 
             await CocosHelper.runSyncActions(this.node, action);
+            this.planeArriveEnd()
         }
     }
 
 
     async planeArriveEnd(){
         if(this.state == PlaneState.finish){
-            cc.moveTo(.5, PlanePosConfig.planesOriginPos[0][i])
-            await CocosHelper.runSyncActions(this.node, action);
+            console.log("飞机到达终点")
+            await CocosHelper.runSyncAction(this.node,cc.moveTo(.5, PlanePosConfig.planesOriginPos[this.playerChairId][this.num]));
+            this.node.color = cc.color(255,255,0,255)
         }
        
-        this.node.color = cc.color(255,255,0,255);
-
-
+    }
     // update (dt) {}
 }

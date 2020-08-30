@@ -19,7 +19,7 @@ export default class BasePlane extends cc.Component {
     color: PlaneColor
     num: number              //飞机编号
     id: number               //飞机ID
-    chairId:number           //椅子ID 对应图中的位置，方便回到原点 0,1,2,3
+    playerChairId:number     //椅子ID 对应图中的位置，方便回到原点 0,1,2,3
     playerId:number          //玩家ID
     state: PlaneState = PlaneState.origin
 
