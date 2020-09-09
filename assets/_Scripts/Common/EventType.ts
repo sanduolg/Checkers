@@ -6,8 +6,13 @@ export enum EventType {
     GameClickDice = "GameClickDice",
     GamePlayPlaneAnim = 'GamePlayPlaneAnim',
 
-    GameDiceAnimFinish = 'GameDiceAnimFinish',
-    GameStopAllPlaneAnim = 'GameStopAllPlaneAnim',
+    GameDiceAnimFinish     = 'GameDiceAnimFinish',
+    GameSetDiceClick       = 'GameSetDiceClick',
+    GameStopAllPlaneAnim   = 'GameStopAllPlaneAnim',
+    GamePlaneAnimFinish    = 'GamePlaneAnimFinish',
+    GameStart              = 'GameStart',
+    GameCheckSamePos       = 'GameCheckSamePos'
+
 
 
 }

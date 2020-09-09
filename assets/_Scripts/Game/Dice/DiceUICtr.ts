@@ -3,6 +3,7 @@ import { EventType } from "../../Common/EventType";
 import UIBase from "../../Common/UIBase";
 import ResMgr from "../../Manager/ResMgr";
 import GameData from "../GameData";
+import TipsForm from "../../Common/TipsForm";
 
 const { ccclass, property } = cc._decorator;
 
@@ -12,14 +13,10 @@ export default class DiceUICtr extends UIBase {
     diceSprite: cc.Sprite = null
     diceNum:number = 0
     onLoad() {
-        EventCenter.on(EventType.GameClickDice,(num)=>{
-            this.showDice(num)
-        })
+        EventCenter.on(EventType.GameClickDice, this.showDice,this)
     }
     onDestroy() {
-        EventCenter.off(EventType.GameClickDice, (num)=>{
-            this.showDice(num)
-        })
+        EventCenter.off(EventType.GameClickDice, this.showDice,this)
     }
     start() {
         this.diceAinm = this.node.getComponent(cc.Animation)
@@ -30,9 +27,11 @@ export default class DiceUICtr extends UIBase {
     showDice(num: number) {
         this.diceNum = num;
         GameData.diceNum = num
+        if(num == GameData.AWARD_DICENUM){
+            TipsForm.popUp("Prefab/Common/TipsFrom", "增加一次摇筛子次数")
+        }
         this.diceAinm.play()
     }
-
     onStopAnim() {
         ResMgr.inst.loadRes("_DynamicAssets","Sprite/Dice/"+this.diceNum.toString(), cc.SpriteFrame).then((spriteFrame: cc.SpriteFrame) => {
             this.diceSprite.spriteFrame = spriteFrame

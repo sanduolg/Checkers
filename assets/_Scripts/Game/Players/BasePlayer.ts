@@ -1,4 +1,5 @@
 import PlaneCtr from "../Plane/PlaneCtr";
+import { PlaneColor } from "../Plane/BasePlane";
 
 const { ccclass, property } = cc._decorator;
 export enum PlayerState {
@@ -18,4 +19,5 @@ export default class BasePlayer extends cc.Component {
     // planes:PlaneCtr[]
     chairId: number
     state: PlayerState
+    color:PlaneColor
 }

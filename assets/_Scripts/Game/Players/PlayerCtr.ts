@@ -3,6 +3,7 @@ import { EventType } from "../../Common/EventType";
 import { PlaneState, PlaneColor } from "../Plane/BasePlane";
 import PlaneCtr from "../Plane/PlaneCtr";
 import BasePlayer from "./BasePlayer";
+import CocosHelper from "../../Common/CocosHelper";
 
 const { ccclass, property } = cc._decorator;
 
@@ -12,6 +13,8 @@ export default class PlayerCtr extends BasePlayer {
     planes: cc.Component[] = []
     planesAnim: cc.Animation[] = []
     planesCtr: PlaneCtr[] = []
+    arrow: cc.Node = null
+    arrowAnim: cc.Animation = null
 
 
     onLoad() {
@@ -19,13 +22,16 @@ export default class PlayerCtr extends BasePlayer {
         EventCenter.on(EventType.GameStopAllPlaneAnim, this.stopPlanesAnim, this)
     }
     start() {
-        for(var i =0;i<4;i++){
+        for (var i = 0; i < 4; i++) {
             this.planesAnim.push(this.planes[i].getComponent(cc.Animation))
             this.planesCtr.push(this.planes[i].getComponent(PlaneCtr))
-            this.planesCtr[i].num = i
+            this.planesCtr[i].planeNum = i
             this.planesCtr[i].playerChairId = this.chairId
-            this.planesCtr[i].color = i+1
+            this.planesCtr[i].color = i + 1
         }
+        this.arrow = CocosHelper.findChildInNode('spriteArrow',this.node)
+        this.arrow.active = false
+        this.arrowAnim = this.arrow.getComponent(cc.Animation)
     }
     onDestroy() {
         EventCenter.off(EventType.GamePlayPlaneAnim, this.playPlanesAnim, this)
@@ -70,10 +76,18 @@ export default class PlayerCtr extends BasePlayer {
     }
 
     stopPlanesAnim() {
-        console.log( this.planesCtr.length)
+        console.log(this.planesCtr.length)
         this.planesCtr.forEach(plane => {
             plane.stopPlaneAnim()
         })
+    }
+
+    setArrowActive(isShow: boolean) {
+        this.arrow.active = isShow
+        if (isShow)
+            this.arrowAnim.play()
+        else
+            this.arrowAnim.stop()
     }
 
 
