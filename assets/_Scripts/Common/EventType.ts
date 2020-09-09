@@ -11,7 +11,8 @@ export enum EventType {
     GameStopAllPlaneAnim   = 'GameStopAllPlaneAnim',
     GamePlaneAnimFinish    = 'GamePlaneAnimFinish',
     GameStart              = 'GameStart',
-    GameCheckSamePos       = 'GameCheckSamePos'
+    GameCheckSamePos       = 'GameCheckSamePos',
+    GameSetNowPlane        = 'GameSetNowPlane'
 
 
 

@@ -32,6 +32,7 @@ export default class PlaneCtr extends BasePlane {
             this.btnPlane.interactable = false
         }
         EventCenter.emit(EventType.GameStopAllPlaneAnim)
+        EventCenter.emit(EventType.GameSetNowPlane,this)
         this.planeMoveAnim(GameData.diceNum)
     }
 
@@ -77,7 +78,6 @@ export default class PlaneCtr extends BasePlane {
                 }
             }
             let jumpPos = this.planeJumpPos()
-            console.log(jumpPos)
             if (jumpPos) {
                 action.push(cc.moveTo(.5, jumpPos))
             }

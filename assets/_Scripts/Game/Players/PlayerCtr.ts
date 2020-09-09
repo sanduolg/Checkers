@@ -77,7 +77,6 @@ export default class PlayerCtr extends BasePlayer {
     }
 
     stopPlanesAnim() {
-        console.log(this.planesCtr.length)
         this.planesCtr.forEach(plane => {
             plane.stopPlaneAnim()
         })

@@ -5,6 +5,7 @@ import GameData from "./GameData";
 import { PlaneState, PlaneColor } from "./Plane/BasePlane";
 import PlayerCtr from "./Players/PlayerCtr";
 import NetManager from "../Network/NetManager";
+import PlaneCtr from "./Plane/PlaneCtr";
 const { ccclass, property } = cc._decorator;
 
 export enum GameState {
@@ -18,17 +19,13 @@ export default class GameCtr {
     players: PlayerCtr[] = null
     nowActionPlayer: number = 0               //当前可操作玩家
     listSamePosPlane: number[][] = []
+    nowPlane: PlaneCtr = null
     onLoad() {
         EventCenter.on(EventType.GameDiceAnimFinish, this.setCurrentPlayerAnim, this)
         EventCenter.on(EventType.GameStart, this.onStartGame, this)
         EventCenter.on(EventType.GamePlaneAnimFinish, this.planeAnimFinish, this)
         EventCenter.on(EventType.GameCheckSamePos, this.checkPlanesSamePos, this)
-    }
-
-    start() {
-    }
-    setPlayerInfo(players: PlayerCtr[]) {
-        this.players = players
+        EventCenter.on(EventType.GameSetNowPlane, this.setNowPlane, this)
     }
 
     onDestroy() {
@@ -36,6 +33,17 @@ export default class GameCtr {
         EventCenter.off(EventType.GameStart, this.onStartGame, this)
         EventCenter.off(EventType.GamePlaneAnimFinish, this.planeAnimFinish, this)
         EventCenter.off(EventType.GameCheckSamePos, this.checkPlanesSamePos, this)
+        EventCenter.off(EventType.GameSetNowPlane, this.setNowPlane, this)
+    }
+
+    start() {
+    }
+    setPlayerInfo(players: PlayerCtr[]) {
+        this.players = players
+    }
+    setNowPlane(plane: PlaneCtr) {
+        this.nowPlane = plane
+        console.log(this.nowPlane.name)
     }
 
     onStartGame() {
@@ -99,6 +107,10 @@ export default class GameCtr {
             this.listSamePosPlane.forEach(info => {
                 this.players[info[0]].planesCtr[info[1]].setPlaneOrigin()
             })
+        }
+        //设置相同位置两架飞机 落在此位置的飞机也要返回到原点
+        if (this.listSamePosPlane.length >= 2) {
+            this.nowPlane.setPlaneOrigin()
         }
     }
 
