@@ -1,7 +1,7 @@
 const { ccclass, property } = cc._decorator;
 
 export enum PlaneColor {
-    unKnow,
+    unKnow = 0,
     red,
     yellow,
     blue,

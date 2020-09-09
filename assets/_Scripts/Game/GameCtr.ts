@@ -78,6 +78,8 @@ export default class GameCtr {
     //检测相同位置飞机
     checkPlanesSamePos(planeClor: PlaneColor, localJumpStep: number) {
         console.log("planeClor:" + planeClor + "   localJumpStep:" + localJumpStep)
+        if (localJumpStep < 0)
+            return
         this.listSamePosPlane = []
         this.players.forEach(player => {
             if (player.color != planeClor) {

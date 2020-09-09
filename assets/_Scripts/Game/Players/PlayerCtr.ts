@@ -27,8 +27,9 @@ export default class PlayerCtr extends BasePlayer {
             this.planesCtr.push(this.planes[i].getComponent(PlaneCtr))
             this.planesCtr[i].planeNum = i
             this.planesCtr[i].playerChairId = this.chairId
-            this.planesCtr[i].color = i + 1
+            this.planesCtr[i].color = this.color
         }
+
         this.arrow = CocosHelper.findChildInNode('spriteArrow',this.node)
         this.arrow.active = false
         this.arrowAnim = this.arrow.getComponent(cc.Animation)
