@@ -1,4 +1,4 @@
-import SoundMgr from "../../UIFrame/SoundMgr";
+import SoundMgr from "../../Manager/SoundMgr";
 
 const {ccclass, property, executeInEditMode, menu, help, inspector} = cc._decorator;
 @ccclass

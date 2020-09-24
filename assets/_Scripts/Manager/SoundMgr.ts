@@ -53,7 +53,7 @@ export default class SoundMgr extends cc.Component {
             cc.audioEngine.playMusic(this.audioCache[url], true);
             return ;
         }
-        let sound = await ResMgr.inst.loadRes<cc.AudioClip>("",url, cc.AudioClip);
+        let sound = await ResMgr.inst.loadRes<cc.AudioClip>("_DynamicAssets",url, cc.AudioClip);
         this.audioCache[url] = sound;
         cc.audioEngine.playMusic(sound, true);
     }
@@ -62,10 +62,10 @@ export default class SoundMgr extends cc.Component {
         if(!url || url === '') return ;
         
         if(this.audioCache[url]) {
-            cc.audioEngine.playEffect(this.audioCache[url], true);
+            cc.audioEngine.playEffect(this.audioCache[url], false);
             return ;
         }
-        let sound = await ResMgr.inst.loadRes<cc.AudioClip>("",url, cc.AudioClip);
+        let sound = await ResMgr.inst.loadRes<cc.AudioClip>("_DynamicAssets",url, cc.AudioClip);
         this.audioCache[url] = sound;
         cc.audioEngine.playEffect(sound, false);
     }

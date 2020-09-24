@@ -7,6 +7,7 @@ import { CommonUtils } from "../Common/Utils/CommonUtils";
 import GameCtr, { GameState } from "../Game/GameCtr";
 import PlayerCtr from "../Game/Players/PlayerCtr";
 import GameData from "../Game/GameData";
+import SoundMgr from "../Manager/SoundMgr";
 
 
 const { ccclass, property } = cc._decorator;
@@ -62,6 +63,11 @@ export default class GameUI extends UIBase {
         this.btnStart.node.active = false
         GameData.gameState = GameState.gaming
         EventCenter.emit(EventType.GameStart)
+    }
+    gameRestart(){
+        this.mask.active = true
+        this.btnStart.node.active = true
+        GameData.gameState = GameState.ready
     }
 
 

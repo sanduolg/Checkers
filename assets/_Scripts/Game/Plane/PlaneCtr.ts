@@ -4,7 +4,7 @@ import PlanePosConfig from "./PlanePosConfig";
 import { EventCenter } from "../../Common/EventCenter";
 import { EventType } from "../../Common/EventType";
 import GameData from "../GameData";
-import ButtonPlus from "../../Common/Components/ButtonPlus";
+import ResMgr from "../../Manager/ResMgr";
 
 const { ccclass, property } = cc._decorator;
 
@@ -16,12 +16,17 @@ export default class PlaneCtr extends BasePlane {
     planeAnim: cc.Animation = null
     jumpStep: number = -1
     localJumpStep: number = -1                      //根据左下角为原始点(1),方便检测飞机重叠
+    normalSprite: cc.SpriteFrame = null
+    winSprite: cc.SpriteFrame = null
     start() {
         this.btnPlane = this.getComponent(cc.Button)
         this.planeAnim = this.getComponent(cc.Animation)
         this.btnPlane.node.on('click', this.onClickPlane, this)
         this.btnPlane.interactable = false
-        this.node.color = cc.color(255, 255, 255, 255);
+        this.normalSprite = this.getComponent(cc.Sprite).spriteFrame
+        ResMgr.inst.loadRes("_DynamicAssets", "Sprite/Game/Sprite_win", cc.SpriteFrame).then((spriteFrame: cc.SpriteFrame) => {
+            this.winSprite = spriteFrame
+        })
     }
 
     onClickPlane() {
@@ -32,7 +37,7 @@ export default class PlaneCtr extends BasePlane {
             this.btnPlane.interactable = false
         }
         EventCenter.emit(EventType.GameStopAllPlaneAnim)
-        EventCenter.emit(EventType.GameSetNowPlane,this)
+        EventCenter.emit(EventType.GameSetNowPlane, this)
         this.planeMoveAnim(GameData.diceNum)
     }
 
@@ -51,7 +56,7 @@ export default class PlaneCtr extends BasePlane {
         if (diceNum <= 0) return
         if (this.state == PlaneState.ready) {
             this.jumpStep = 0
-            let action = [cc.moveTo(.5, PlanePosConfig.planesPos[this.playerChairId][0])]
+            let action = [cc.jumpTo(.5, PlanePosConfig.planesPos[this.playerChairId][0], 50, 1)]
             await CocosHelper.runSyncActions(this.node, action);
         } else {
             let action = []
@@ -59,35 +64,36 @@ export default class PlaneCtr extends BasePlane {
             this.jumpStep = this.jumpStep + diceNum;
             if (this.jumpStep == GameData.mapStep) {
                 this.state = PlaneState.finish
-                for (var i = oldStep; i <= this.jumpStep; i++) {
-                    action.push(cc.moveTo(.5, PlanePosConfig.planesPos[this.playerChairId][i]))
+                for (var i = oldStep + 1; i <= this.jumpStep; i++) {
+                    action.push(cc.jumpTo(.5, PlanePosConfig.planesPos[this.playerChairId][i], 50, 1))
                 }
             } else if (this.jumpStep > GameData.mapStep) {
                 this.state = PlaneState.flown
-                for (var i = oldStep; i <= GameData.mapStep; i++) {
-                    action.push(cc.moveTo(.5, PlanePosConfig.planesPos[this.playerChairId][i]))
+                for (var i = oldStep + 1; i <= GameData.mapStep; i++) {
+                    action.push(cc.jumpTo(.5, PlanePosConfig.planesPos[this.playerChairId][i], 50, 1))
                 }
                 for (var i = GameData.mapStep - 1; i >= 2 * GameData.mapStep - this.jumpStep; i--) {
-                    action.push(cc.moveTo(.5, PlanePosConfig.planesPos[this.playerChairId][i]))
+                    action.push(cc.jumpTo(.5, PlanePosConfig.planesPos[this.playerChairId][i], 50, 1))
                 }
                 this.jumpStep = 2 * GameData.mapStep - this.jumpStep
             } else {
                 this.state = PlaneState.flown
-                for (var i = oldStep; i <= this.jumpStep; i++) {
-                    action.push(cc.moveTo(.5, PlanePosConfig.planesPos[this.playerChairId][i]))
+                for (var i = oldStep + 1; i <= this.jumpStep; i++) {
+                    action.push(cc.jumpTo(.5, PlanePosConfig.planesPos[this.playerChairId][i], 50, 1))
                 }
             }
             let jumpPos = this.planeJumpPos()
             if (jumpPos) {
-                action.push(cc.moveTo(.5, jumpPos))
+                action.push(cc.jumpTo(.5, jumpPos,50,1))
             }
             this.selfJumpStepToLocalJumpStep()
             await CocosHelper.runSyncActions(this.node, action);
+            
         }
 
         EventCenter.emit(EventType.GamePlaneAnimFinish, true)
         EventCenter.emit(EventType.GameSetDiceClick, true)
-        EventCenter.emit(EventType.GameCheckSamePos,this.color,this.localJumpStep)
+        EventCenter.emit(EventType.GamePlaneJumpEnd, this.color, this.localJumpStep)
         this.planeArriveEnd()
     }
 
@@ -118,7 +124,7 @@ export default class PlaneCtr extends BasePlane {
         if (this.state == PlaneState.finish) {
             console.log("飞机到达终点")
             await CocosHelper.runSyncAction(this.node, cc.moveTo(.5, PlanePosConfig.planesOriginPos[this.playerChairId][this.planeNum]));
-            this.node.color = cc.color(255, 255, 0, 255)
+            this.getComponent(cc.Sprite).spriteFrame = this.winSprite
         }
 
     }
@@ -141,15 +147,16 @@ export default class PlaneCtr extends BasePlane {
         }
     }
 
-   public async setPlaneOrigin(){
-      this.release()
-      await CocosHelper.runSyncAction(this.node, cc.moveTo(.5, PlanePosConfig.planesOriginPos[this.playerChairId][this.planeNum]));
+    public async setPlaneOrigin() {
+        this.release()
+        await CocosHelper.runSyncAction(this.node, cc.moveTo(.5, PlanePosConfig.planesOriginPos[this.playerChairId][this.planeNum]));
     }
 
-    release(){
-        this.jumpStep = -1 
+    release() {
+        this.jumpStep = -1
         this.localJumpStep = -1
         this.state = PlaneState.origin
+        this.getComponent(cc.Sprite).spriteFrame = this.normalSprite
     }
 
     // update (dt) {}

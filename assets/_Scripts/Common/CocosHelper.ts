@@ -1,3 +1,4 @@
+import SoundMgr from "../Manager/SoundMgr";
 import { SysDefine } from "./SysDefine";
 export class LoadProgress {
     public url: string;
@@ -47,6 +48,16 @@ export default class CocosHelper {
     }
 
     public static async runSyncActions(node: cc.Node, actions: cc.FiniteTimeAction[]) {
+        if(!actions || actions.length <= 0) return ;
+        return new Promise((resolve, reject) => {
+            actions.push(cc.callFunc(() => {
+                resolve(true);
+            }));
+            node.runAction(cc.sequence(actions));
+        });
+    }
+
+    public static async runSyncActionsAndMusic(node: cc.Node, actions: cc.FiniteTimeAction[],effctMusic:string) {
         if(!actions || actions.length <= 0) return ;
         return new Promise((resolve, reject) => {
             actions.push(cc.callFunc(() => {

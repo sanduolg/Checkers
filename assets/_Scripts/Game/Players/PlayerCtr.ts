@@ -30,7 +30,7 @@ export default class PlayerCtr extends BasePlayer {
             this.planesCtr[i].color = this.color
         }
 
-        this.arrow = CocosHelper.findChildInNode('spriteArrow',this.node)
+        this.arrow = CocosHelper.findChildInNode('spriteArrow', this.node)
         this.arrow.active = false
         this.arrowAnim = this.arrow.getComponent(cc.Animation)
     }
@@ -90,6 +90,14 @@ export default class PlayerCtr extends BasePlayer {
             this.arrowAnim.stop()
     }
 
+    checkAllPlaneIsEnd(): boolean {
+        for (var i = 0; i < this.planesCtr.length; i++) {
+            if (this.planesCtr[i].state != PlaneState.finish) {
+                return false
+            }
+        }
+        return true
+    }
 
     // update (dt) {}
 }

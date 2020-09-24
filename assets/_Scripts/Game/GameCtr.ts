@@ -24,7 +24,7 @@ export default class GameCtr {
         EventCenter.on(EventType.GameDiceAnimFinish, this.setCurrentPlayerAnim, this)
         EventCenter.on(EventType.GameStart, this.onStartGame, this)
         EventCenter.on(EventType.GamePlaneAnimFinish, this.planeAnimFinish, this)
-        EventCenter.on(EventType.GameCheckSamePos, this.checkPlanesSamePos, this)
+        EventCenter.on(EventType.GamePlaneJumpEnd, this.planeJumpEnd, this)
         EventCenter.on(EventType.GameSetNowPlane, this.setNowPlane, this)
     }
 
@@ -32,7 +32,7 @@ export default class GameCtr {
         EventCenter.off(EventType.GameDiceAnimFinish, this.setCurrentPlayerAnim, this)
         EventCenter.off(EventType.GameStart, this.onStartGame, this)
         EventCenter.off(EventType.GamePlaneAnimFinish, this.planeAnimFinish, this)
-        EventCenter.off(EventType.GameCheckSamePos, this.checkPlanesSamePos, this)
+        EventCenter.off(EventType.GamePlaneJumpEnd, this.planeJumpEnd, this)
         EventCenter.off(EventType.GameSetNowPlane, this.setNowPlane, this)
     }
 
@@ -83,6 +83,19 @@ export default class GameCtr {
             this.nowActionPlayer = this.nowActionPlayer - 4
         }
     }
+
+    planeJumpEnd(planeClor: PlaneColor, localJumpStep: number) {
+        this.checkPlanesSamePos(planeClor, localJumpStep)
+        if (this.chackGameIsEnd()) {
+            console.log('游戏结束')
+            EventCenter.emit(EventType.GameRestart)
+            this.players.forEach(player => {
+                player.planesCtr.forEach(plane => {
+                    plane.setPlaneOrigin()
+                });
+            });
+        }
+    }
     //检测相同位置飞机
     checkPlanesSamePos(planeClor: PlaneColor, localJumpStep: number) {
         console.log("planeClor:" + planeClor + "   localJumpStep:" + localJumpStep)
@@ -100,6 +113,7 @@ export default class GameCtr {
             }
         })
         this.setSamePosPlaneReturnOrigin()
+
     }
     //设置飞机到原点
     setSamePosPlaneReturnOrigin() {
@@ -114,6 +128,14 @@ export default class GameCtr {
         }
     }
 
+    chackGameIsEnd(): boolean {
+        for (var i = 0; i < this.players.length; i++) {
+            if (!this.players[i].checkAllPlaneIsEnd()) {
+                return false
+            }
+        }
+        return true
+    }
 
     // update (dt) {}
 }
